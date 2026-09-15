@@ -1,0 +1,98 @@
+<html>
+  <head>
+    <link rel="stylesheet" href="style.css">
+    <title>Parcel Sandbox</title>
+    <meta charset="UTF-8" />
+  </head>
+
+  <body>
+ <h1>Приветствую!</h1>
+    <h2>Здесь вы можете ознакомиться с моими проектами или связаться со мной по следующим ссылкам:</h2>
+    <div class="container">
+      <!-- Ссылка на Telegram -->
+      <a href="https://t.me/Fendyar_Club" target="_blank" class="icon-link">
+        <div class="icon-container">
+          <span class="icon-circle"></span>
+          <span class="icon-text">
+            <i class="icon-box" id="telegram"></i>
+          </span>
+        </div>
+      </a>
+
+      <!-- Ссылка на Pinterest -->
+      <a href="https://pinterest.com/ignatvoylov/" target="_blank" class="icon-link">
+        <div class="icon-container">
+          <span class="icon-circle"></span>
+          <span class="icon-text">
+            <i class="icon-box" id="pinterest"></i>
+          </span>
+        </div>
+      </a>
+
+      <!-- Ссылка на Discord -->
+      <a href="https://discord.com/users/668531509354954798" target="_blank" class="icon-link">
+        <div class="icon-container">
+          <span class="icon-circle"></span>
+          <span class="icon-text">
+            <i class="icon-box" id="discord"></i>
+          </span>
+        </div>
+      </a>
+
+      <!-- Ссылка на Reddit -->
+      <a href="https://reddit.com/user/Ignat_Voylov/" target="_blank" class="icon-link">
+        <div class="icon-container">
+          <span class="icon-circle"></span>
+          <span class="icon-text">
+            <i class="icon-box" id="reddit"></i>
+          </span>
+        </div>
+      </a>
+
+      <!-- Ссылка на Github -->
+      <a href="https://github.com/Ignat-Voylov" target="_blank" class="icon-link">
+        <div class="icon-container">
+          <span class="icon-circle"></span>
+          <span class="icon-text">
+            <i class="icon-box" id="github"></i>
+          </span>
+        </div>
+      </a>
+
+      <!-- Ссылка на Instagram -->
+      <a href="https://instagram.com/ignat.voylov" target="_blank" class="icon-link">
+        <div class="icon-container">
+          <span class="icon-circle"></span>
+          <span class="icon-text">
+            <i class="icon-box" id="instagram"></i>
+          </span>
+        </div>
+      </a>
+      
+    </div>
+
+<script type="module">
+  import { 
+    getPinterestIcon, 
+    getTelegramIcon, 
+    getDiscordIcon, 
+    getRedditIcon,
+    getGitHubIcon,
+    getInstagramIcon,
+    sayHello 
+  } from 'https://unpkg.com/weblibrary-by-yougiroman@1.0.3/index.js';
+
+  document.addEventListener('DOMContentLoaded', () => {
+    console.log(sayHello("Создатель"));
+
+    // Рендерим только те элементы, которые реально существуют в HTML
+    document.getElementById('pinterest').innerHTML = getPinterestIcon(48, '#E60023');
+    document.getElementById('telegram').innerHTML = getTelegramIcon(48, '#24A1DE');
+    document.getElementById('discord').innerHTML = getDiscordIcon(48, '#5865F2');
+    document.getElementById('reddit').innerHTML = getRedditIcon(48, '#FF4500');
+    document.getElementById('github').innerHTML = getGitHubIcon(48, '#181717');
+    document.getElementById('instagram').innerHTML = getInstagramIcon(48, '#E1306C');
+  });
+</script>
+  </body>
+</html>
