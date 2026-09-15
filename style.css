@@ -144,15 +144,17 @@ div span {
 
 /* Стили для переключателя языков сверху слева */
 .lang-switcher {
-  position: absolute;
+  position: fixed; /* ИСПРАВЛЕНО: fixed вместо absolute намертво привязывает к экрану */
   top: 20px;
   left: 20px;
-  display: flex;
+  display: flex !important; /* Принудительно выстраивает кнопки в ряд */
+  flex-direction: row !important;
   align-items: center;
   font-family: sans-serif;
   font-size: 0.9rem;
-  z-index: 1000; /* Чтобы кнопки всегда были поверх остальных элементов */
+  z-index: 9999; /* Поверх абсолютно всего */
 }
+
 
 .lang-btn {
   background: none;

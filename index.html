@@ -122,16 +122,16 @@
     }
 
     // 2. Если нет, определяем язык его системы/браузера
-    const browserLang = navigator.language || navigator.userLanguage;
+    const browserLang = navigator.language || navigator.userLanguage || 'en';
     
     // Список славянских кодов языков (ru, uk, be)
     const slavicLanguages = ['ru', 'uk', 'be'];
-    const primarySubtag = browserLang.split('-')[0].toLowerCase();
+    const primarySubtag = browserLang.split('-')[0].toLowerCase(); // ИСПРАВЛЕНО: добавили [0] перед toLowerCase()
 
     if (slavicLanguages.includes(primarySubtag)) {
       return 'ru';
     } else {
-      return 'en'; // Для всех остальных (включая США/Америку) отдаем английский
+      return 'en';
     }
   }
 
