@@ -3,17 +3,55 @@
     <link rel="stylesheet" href="style.css">
     <title>Parcel Sandbox</title>
     <meta charset="UTF-8" />
+    
+    <!-- Инлайновые стили гарантируют правильное отображение кнопок в один ряд по центру -->
+    <style>
+      .lang-switcher {
+        display: block !important;
+        text-align: center !important; /* Центрируем блок кнопок по горизонтали */
+        margin-bottom: 20px !important; /* Делаем отступ снизу до заголовка */
+        white-space: nowrap !important; /* Запрещаем кнопкам переноситься на новую строку */
+        font-family: sans-serif !important;
+        font-size: 0.9rem !important;
+        width: 100% !important;
+      }
+
+      .lang-btn {
+        background: none !important;
+        border: none !important;
+        cursor: pointer !important;
+        padding: 5px 10px !important;
+        font-weight: bold !important;
+        color: #999 !important;
+        display: inline-block !important; /* Выстраивает кнопки строго в один ряд */
+        vertical-align: middle !important;
+        transition: color 0.2s ease !important;
+      }
+
+      .lang-btn:hover {
+        color: #333 !important;
+      }
+
+      .lang-btn.active {
+        color: #263d42 !important;
+        border-bottom: 2px solid #263d42 !important;
+      }
+
+      .lang-divider {
+        color: #ccc !important;
+        display: inline-block !important; /* Палочка-разделитель тоже в один ряд */
+        vertical-align: middle !important;
+        user-select: none !important;
+      }
+    </style>
   </head>
 
   <body>
-    <!-- Кнопки переключения языка сверху слева -->
+    <!-- Кнопки переключения языка теперь находятся в общем потоке прямо над заголовком -->
     <div class="lang-switcher">
-      <button id="lang-ru" class="lang-btn">RU</button>
-      <span class="lang-divider">|</span>
-      <button id="lang-en" class="lang-btn">EN</button>
+      <button id="lang-ru" class="lang-btn">RU</button><span class="lang-divider">|</span><button id="lang-en" class="lang-btn">EN</button>
     </div>
 
-    <!-- Добавили id для динамической смены текста -->
     <h1 id="main-title">Приветствую!</h1>
     <h2 id="main-subtitle">Здесь вы можете ознакомиться с моими проектами или связаться со мной по следующим ссылкам:</h2>
     
@@ -115,18 +153,16 @@
 
   // Функция определения стартового языка
   function getInitialLanguage() {
-    // 1. Проверяем, менял ли пользователь язык вручную ранее
     const savedLang = localStorage.getItem('user-lang');
     if (savedLang && (savedLang === 'ru' || savedLang === 'en')) {
       return savedLang;
     }
 
-    // 2. Если нет, определяем язык его системы/браузера
     const browserLang = navigator.language || navigator.userLanguage || 'en';
-    
-    // Список славянских кодов языков (ru, uk, be)
     const slavicLanguages = ['ru', 'uk', 'be'];
-    const primarySubtag = browserLang.split('-')[0].toLowerCase(); // ИСПРАВЛЕНО: добавили [0] перед toLowerCase()
+    
+    // Безопасное извлечение основного тега языка (например, 'en' из 'en-US')
+    const primarySubtag = browserLang.split('-')[0].toLowerCase();
 
     if (slavicLanguages.includes(primarySubtag)) {
       return 'ru';
