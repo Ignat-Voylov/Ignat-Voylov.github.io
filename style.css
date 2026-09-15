@@ -138,13 +138,48 @@ div span {
   background: linear-gradient(135deg, #833ab4, #c13584);
 }
 
-
-
-
-
 .icon-text {
   z-index: 100;
 }
+
+/* Стили для переключателя языков сверху слева */
+.lang-switcher {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  display: flex;
+  align-items: center;
+  font-family: sans-serif;
+  font-size: 0.9rem;
+  z-index: 1000; /* Чтобы кнопки всегда были поверх остальных элементов */
+}
+
+.lang-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 5px 8px;
+  font-weight: bold;
+  color: #999;
+  transition: color 0.2s ease;
+}
+
+.lang-btn:hover {
+  color: #333;
+}
+
+/* Стиль для активного (выбранного текущего) языка */
+.lang-btn.active {
+  color: #263d42; /* Цвет совпадает с вашей дефолтной переменной --primary */
+  border-bottom: 2px solid #263d42;
+}
+
+.lang-divider {
+  color: #ccc;
+  user-select: none; /* Чтобы палочку нельзя было случайно выделить курсором */
+}
+
+
 
 @keyframes around {
   0% {

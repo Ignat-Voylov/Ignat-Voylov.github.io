@@ -6,8 +6,17 @@
   </head>
 
   <body>
- <h1>Приветствую!</h1>
-    <h2>Здесь вы можете ознакомиться с моими проектами или связаться со мной по следующим ссылкам:</h2>
+    <!-- Кнопки переключения языка сверху слева -->
+    <div class="lang-switcher">
+      <button id="lang-ru" class="lang-btn">RU</button>
+      <span class="lang-divider">|</span>
+      <button id="lang-en" class="lang-btn">EN</button>
+    </div>
+
+    <!-- Добавили id для динамической смены текста -->
+    <h1 id="main-title">Приветствую!</h1>
+    <h2 id="main-subtitle">Здесь вы можете ознакомиться с моими проектами или связаться со мной по следующим ссылкам:</h2>
+    
     <div class="container">
       <!-- Ссылка на Telegram -->
       <a href="https://t.me/Fendyar_Club" target="_blank" class="icon-link">
@@ -82,10 +91,69 @@
     sayHello 
   } from 'https://unpkg.com/weblibrary-by-yougiroman@1.0.3/index.js';
 
+  // Словарь с переводами
+  const translations = {
+    ru: {
+      title: "Приветствую!",
+      subtitle: "Здесь вы можете ознакомиться с моими проектами или связаться со мной по следующим ссылкам:"
+    },
+    en: {
+      title: "Welcome!",
+      subtitle: "Here you can check out my projects or contact me via the following links:"
+    }
+  };
+
+  // Функция применения перевода на странице
+  function applyLanguage(lang) {
+    document.getElementById('main-title').innerText = translations[lang].title;
+    document.getElementById('main-subtitle').innerText = translations[lang].subtitle;
+
+    // Подсвечиваем активную кнопку переключателя
+    document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
+    document.getElementById(`lang-${lang}`).classList.add('active');
+  }
+
+  // Функция определения стартового языка
+  function getInitialLanguage() {
+    // 1. Проверяем, менял ли пользователь язык вручную ранее
+    const savedLang = localStorage.getItem('user-lang');
+    if (savedLang && (savedLang === 'ru' || savedLang === 'en')) {
+      return savedLang;
+    }
+
+    // 2. Если нет, определяем язык его системы/браузера
+    const browserLang = navigator.language || navigator.userLanguage;
+    
+    // Список славянских кодов языков (ru, uk, be)
+    const slavicLanguages = ['ru', 'uk', 'be'];
+    const primarySubtag = browserLang.split('-')[0].toLowerCase();
+
+    if (slavicLanguages.includes(primarySubtag)) {
+      return 'ru';
+    } else {
+      return 'en'; // Для всех остальных (включая США/Америку) отдаем английский
+    }
+  }
+
   document.addEventListener('DOMContentLoaded', () => {
     console.log(sayHello("Создатель"));
 
-    // Рендерим только те элементы, которые реально существуют в HTML
+    // Инициализируем язык при загрузке страницы
+    const currentLang = getInitialLanguage();
+    applyLanguage(currentLang);
+
+    // Вешаем обработчики кликов на кнопки переключения
+    document.getElementById('lang-ru').addEventListener('click', () => {
+      localStorage.setItem('user-lang', 'ru');
+      applyLanguage('ru');
+    });
+
+    document.getElementById('lang-en').addEventListener('click', () => {
+      localStorage.setItem('user-lang', 'en');
+      applyLanguage('en');
+    });
+
+    // Рендерим ваши иконки из библиотеки
     document.getElementById('pinterest').innerHTML = getPinterestIcon(48, '#E60023');
     document.getElementById('telegram').innerHTML = getTelegramIcon(48, '#24A1DE');
     document.getElementById('discord').innerHTML = getDiscordIcon(48, '#5865F2');
