@@ -4,16 +4,26 @@
     <title>Parcel Sandbox</title>
     <meta charset="UTF-8" />
     
-    <!-- Инлайновые стили гарантируют правильное отображение кнопок в один ряд по центру -->
     <style>
+      /* Панель управления возвращена наверх по центру экрана */
+      .controls-panel {
+        display: flex !important;
+        flex-direction: row !important;
+        align-items: center;
+        justify-content: center;
+        gap: 20px; /* Увеличили расстояние до кнопки темы */
+        margin-top: 20px;
+        margin-bottom: 20px;
+        width: 100%;
+        font-family: sans-serif;
+        font-size: 0.9rem;
+      }
+
       .lang-switcher {
-        display: block !important;
-        text-align: center !important; /* Центрируем блок кнопок по горизонтали */
-        margin-bottom: 20px !important; /* Делаем отступ снизу до заголовка */
-        white-space: nowrap !important; /* Запрещаем кнопкам переноситься на новую строку */
-        font-family: sans-serif !important;
-        font-size: 0.9rem !important;
-        width: 100% !important;
+        display: flex !important;
+        flex-direction: row !important;
+        align-items: center;
+        white-space: nowrap !important;
       }
 
       .lang-btn {
@@ -23,37 +33,66 @@
         padding: 5px 10px !important;
         font-weight: bold !important;
         color: #999 !important;
-        display: inline-block !important; /* Выстраивает кнопки строго в один ряд */
-        vertical-align: middle !important;
         transition: color 0.2s ease !important;
       }
 
       .lang-btn:hover {
-        color: #333 !important;
+        color: var(--text-color) !important;
       }
 
       .lang-btn.active {
-        color: #263d42 !important;
-        border-bottom: 2px solid #263d42 !important;
+        color: var(--primary) !important;
+        border-bottom: 2px solid var(--primary) !important;
       }
 
       .lang-divider {
         color: #ccc !important;
-        display: inline-block !important; /* Палочка-разделитель тоже в один ряд */
-        vertical-align: middle !important;
         user-select: none !important;
+      }
+
+      /* КНОПКА ТЕМЫ СТАЛА КРУПНЕЕ */
+      .theme-toggle-btn {
+        background: none;
+        border: none;
+        cursor: pointer;
+        font-size: 1.6rem; /* Увеличили размер иконки луны/солнца */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 5px 10px;
+        transition: transform 0.2s ease;
+      }
+      
+      .theme-toggle-btn:hover {
+        transform: scale(1.2); /* Приятный эффект увеличения при наведении */
+      }
+      
+      #main-logo {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 20px;
+        width: 100%;
       }
     </style>
   </head>
 
   <body>
-    <!-- Кнопки переключения языка теперь находятся в общем потоке прямо над заголовком -->
-    <div class="lang-switcher">
-      <button id="lang-ru" class="lang-btn">RU</button><span class="lang-divider">|</span><button id="lang-en" class="lang-btn">EN</button>
+    <!-- Панель управления (Языки по центру + Крупная Кнопка Темы) -->
+    <div class="controls-panel">
+      <div class="lang-switcher">
+        <button id="lang-ru" class="lang-btn">RU</button>
+        <span class="lang-divider">|</span>
+        <button id="lang-en" class="lang-btn">EN</button>
+      </div>
+      <button id="theme-toggle" class="theme-toggle-btn" title="Сменить тему">🌙</button>
     </div>
 
+    <div id="main-logo"></div>
+
     <h1 id="main-title">Приветствую!</h1>
-    <h2 id="main-subtitle">Здесь вы можете ознакомиться с моими проектами или связаться со мной по следующим ссылкам:</h2>
+    <h2 id="main-subtitle">Я начинающий веб-дизайнер...</h2>
+    <p id="main-cta" style="text-align: center; font-family: sans-serif; margin-bottom: 30px; color: var(--text-muted); transition: color 0.3s ease;"></p>
     
     <div class="container">
       <!-- Ссылка на Telegram -->
@@ -126,59 +165,80 @@
     getRedditIcon,
     getGitHubIcon,
     getInstagramIcon,
+    getWhiteLogo,
+    getDarkLogo,
     sayHello 
-  } from 'https://unpkg.com/weblibrary-by-yougiroman@1.0.3/index.js';
+  } from 'https://unpkg.com/weblibrary-by-yougiroman@1.0.4/index.js';
 
   // Словарь с переводами
-  const translations = {
+   const translations = {
     ru: {
-      title: "Приветствую!",
-      subtitle: "Здесь вы можете ознакомиться с моими проектами или связаться со мной по следующим ссылкам:"
+      title: "Привет! Меня зовут Игнат Войлов",
+      subtitle: "Я начинающий веб-дизайнер и разработчик программного обеспечения.",
+      cta: "Здесь вы можете ознакомиться с моими проектами или связаться со мной по следующим ссылкам:"
     },
     en: {
-      title: "Welcome!",
-      subtitle: "Here you can check out my projects or contact me via the following links:"
+      title: "Hi! My name is Ignat Voylov",
+      subtitle: "I am an aspiring web designer and software developer.",
+      cta: "Check out my projects or contact me via the links below:"
     }
   };
 
-  // Функция применения перевода на странице
   function applyLanguage(lang) {
     document.getElementById('main-title').innerText = translations[lang].title;
     document.getElementById('main-subtitle').innerText = translations[lang].subtitle;
-
-    // Подсвечиваем активную кнопку переключателя
+    document.getElementById('main-cta').innerText = translations[lang].cta;
     document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
     document.getElementById(`lang-${lang}`).classList.add('active');
   }
 
-  // Функция определения стартового языка
   function getInitialLanguage() {
     const savedLang = localStorage.getItem('user-lang');
-    if (savedLang && (savedLang === 'ru' || savedLang === 'en')) {
-      return savedLang;
-    }
-
+    if (savedLang && (savedLang === 'ru' || savedLang === 'en')) return savedLang;
     const browserLang = navigator.language || navigator.userLanguage || 'en';
-    const slavicLanguages = ['ru', 'uk', 'be'];
-    
-    // Безопасное извлечение основного тега языка (например, 'en' из 'en-US')
     const primarySubtag = browserLang.split('-')[0].toLowerCase();
+    return ['ru', 'uk', 'be'].includes(primarySubtag) ? 'ru' : 'en';
+  }
 
-    if (slavicLanguages.includes(primarySubtag)) {
-      return 'ru';
-    } else {
-      return 'en';
+    // Функция плавного рендера логотипа (эффект бесшовного перетекания)
+  function renderLogo(theme) {
+    const logoContainer = document.getElementById('main-logo');
+    
+    // 1. Быстро гасим прозрачность старого логотипа
+    logoContainer.style.opacity = 0;
+    
+    // 2. Ждем 150 миллисекунд (половина времени анимации), пока он наполовину потухнет
+    setTimeout(() => {
+      if (theme === 'dark') {
+        logoContainer.innerHTML = getDarkLogo(200, '#050505');
+      } else {
+        logoContainer.innerHTML = getWhiteLogo(200, '#f5f5f5');
+      }
+      // 3. Плавно зажигаем новый логотип обратно
+      logoContainer.style.opacity = 1;
+    }, 150);
+  }
+
+  // НАСТРОЙКА АВТОМАТИЧЕСКОГО ОПРЕДЕЛЕНИЯ ТЕМЫ СИСТЕМЫ
+  function getInitialTheme() {
+    // 1. Проверяем, выбирал ли пользователь тему на сайте вручную ранее
+    const savedTheme = localStorage.getItem('user-theme');
+    if (savedTheme && (savedTheme === 'dark' || savedTheme === 'light')) {
+      return savedTheme;
     }
+
+    // 2. Если ручного выбора не было, спрашиваем у операционной системы устройства
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    return prefersDark ? 'dark' : 'light';
   }
 
   document.addEventListener('DOMContentLoaded', () => {
     console.log(sayHello("Создатель"));
 
-    // Инициализируем язык при загрузке страницы
+    // 1. Настройка языков
     const currentLang = getInitialLanguage();
     applyLanguage(currentLang);
 
-    // Вешаем обработчики кликов на кнопки переключения
     document.getElementById('lang-ru').addEventListener('click', () => {
       localStorage.setItem('user-lang', 'ru');
       applyLanguage('ru');
@@ -189,7 +249,36 @@
       applyLanguage('en');
     });
 
-    // Рендерим ваши иконки из библиотеки
+    // 2. Автоматическая настройка темы при первой загрузке
+    const themeToggleBtn = document.getElementById('theme-toggle');
+    let currentTheme = getInitialTheme(); // Используем новую умную функцию
+    
+    if (currentTheme === 'dark') {
+      document.body.classList.add('dark-theme');
+      themeToggleBtn.innerText = '☀️';
+    } else {
+      document.body.classList.remove('dark-theme');
+      themeToggleBtn.innerText = '🌙';
+    }
+    
+    renderLogo(currentTheme);
+
+    // Обработчик ручного клика по кнопке смены темы
+    themeToggleBtn.addEventListener('click', () => {
+      if (document.body.classList.contains('dark-theme')) {
+        document.body.classList.remove('dark-theme');
+        themeToggleBtn.innerText = '🌙';
+        currentTheme = 'light';
+      } else {
+        document.body.classList.add('dark-theme');
+        themeToggleBtn.innerText = '☀️';
+        currentTheme = 'dark';
+      }
+      localStorage.setItem('user-theme', currentTheme);
+      renderLogo(currentTheme);
+    });
+
+    // 3. Рендерим иконки соцсетей из библиотеки
     document.getElementById('pinterest').innerHTML = getPinterestIcon(48, '#E60023');
     document.getElementById('telegram').innerHTML = getTelegramIcon(48, '#24A1DE');
     document.getElementById('discord').innerHTML = getDiscordIcon(48, '#5865F2');

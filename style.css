@@ -1,3 +1,20 @@
+/* Объявляем CSS-переменные темы оформления */
+:root {
+  --bg-color: #f5f5f5;      /* Светлый фон */
+  --text-color: #050505;    /* Темный текст */
+  --text-muted: #555555;    /* Серый подзаголовок */
+  --primary: #263d42;       /* Базовый цвет рамок иконок */
+  --card-bg: transparent;   
+}
+
+/* Переменные для ТЕМНОЙ ТЕМЫ */
+body.dark-theme {
+  --bg-color: #050505;      /* Темный фон */
+  --text-color: #f5f5f5;    /* Светлый текст */
+  --text-muted: #aaaaaa;    /* Приглушенный светлый текст */
+  --primary: #f5f5f5;       /* Светлые рамки иконок */
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -6,27 +23,31 @@
 
 body {
   display: flex;
-  flex-direction: column; /* Выстраивает элементы вертикально (текст сверху, иконки снизу) */
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   min-height: 100vh;
-  background-color: #f5f5f5; /* Опционально: приятный задний фон */
-  font-family: sans-serif;   /* Опционально: более аккуратный шрифт */
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  font-family: sans-serif;
+  transition: background-color 0.3s ease, color 0.3s ease; 
 }
 
-/* Добавим стили для текста, чтобы сделать верстку аккуратнее */
 h1 {
   margin-bottom: 10px;
   text-align: center;
+  transition: color 0.3s ease;
 }
 
 h2 {
-  margin-bottom: 30px; /* Отступ от текста до иконок */
+  margin-bottom: 30px;
   text-align: center;
   font-weight: normal;
   font-size: 1.2rem;
-  color: #555;
+  color: var(--text-muted);
+  transition: color 0.3s ease;
 }
+
 .icon-container {
   width: 80px;
   height: 80px;
@@ -34,20 +55,19 @@ h2 {
   display: flex;
   justify-content: center;
   align-items: center;
-  --primary: #263d42;
   border: 1px solid var(--primary);
-  transition: 0.2s;
+  transition: transform 0.2s, border-color 0.3s ease;
   margin-right: 20px;
   cursor: pointer;
 }
 
 .container {
   display: flex;
-  flex-direction: row; /* Принудительно выстраивает иконки по горизонтали */
-  flex-wrap: wrap;     /* Позволяет иконкам переноситься на новую строку на мобильных */
+  flex-direction: row;
+  flex-wrap: wrap;
   justify-content: center;
   align-items: center;
-  width: 100%;         /* Чтобы контейнер занимал всю ширину и центрировал элементы */
+  width: 100%;
 }
 
 div span {
@@ -64,7 +84,6 @@ div span {
   transition: 0.2s;
 }
 
-
 .icon-text {
   width: 60px;
   height: 60px;
@@ -72,68 +91,48 @@ div span {
   font-size: 1rem;
   border-radius: inherit;
   color: var(--primary);
+  transition: color 0.3s ease;
 }
 
 .icon-container:hover {
   transform: scale(1.2);
 }
 
-/* Отключаем стандартное оформление ссылок */
 .icon-link {
-  text-decoration: none; 
+  text-decoration: none;
   color: inherit;
 }
 
-/* Применяем hover-эффекты к ссылкам по порядку */
-.icon-link:nth-of-type(1):hover .icon-container {
-  --primary: #24a1de; /* Голубой для Telegram */
+/* Hover эффекты (остаются яркими на обеих темах) */
+.icon-link:nth-of-type(1):hover .icon-container { --primary: #24a1de; }
+.icon-link:nth-of-type(2):hover .icon-container { --primary: #e60023; }
+.icon-link:nth-of-type(3):hover .icon-container { --primary: #5865f2; }
+.icon-link:nth-of-type(4):hover .icon-container { --primary: #ff4500; }
+.icon-link:nth-of-type(5):hover .icon-container { --primary: #181717; }
+.icon-link:nth-of-type(6):hover .icon-container { --primary: #833ab4; }
+
+body.dark-theme .icon-link:nth-of-type(5):hover .icon-container {
+  --primary: #ffffff;
 }
 
-.icon-link:nth-of-type(2):hover .icon-container {
-  --primary: #e60023; /* Красный для Pinterest */
-}
-
-.icon-link:nth-of-type(3):hover .icon-container {
-  --primary: #5865f2; /* Синий для Discord */
-}
-
-.icon-link:nth-of-type(4):hover .icon-container {
-  --primary: #ff4500; /* Оранжевый для Reddit */
-}
-
-.icon-link:nth-of-type(5):hover .icon-container {
-  --primary: #181717; /* Черный для Github */
-}
-
-
-.icon-link:nth-of-type(6):hover .icon-container {
-  --primary: #833ab4; /* Темный для группы */
-}
-
-/* градиента для иконки */
 .icon-link:nth-of-type(6):hover .icon-text {
   background: linear-gradient(to bottom, #833ab4, #c13584);
 }
-
 
 .icon-container:hover .icon-circle {
   animation: around 0.2s infinite;
   border: 1px dashed var(--primary);
 }
 
-/* Изменяем поведение при наведении */
 .icon-container:hover .icon-text {
   background: var(--primary);
 }
 
-/* Принудительно перекрашиваем внутренние SVG-иконки в белый цвет при наведении */
 .icon-container:hover .icon-text svg {
   fill: white !important;
   stroke: white !important;
 }
 
-/* Отдельное исправление для Instagram (6-я ссылка), чтобы градиент не ломал иконку */
-/* Градиентный фон для Instagram из двух цветов при наведении */
 .icon-link:nth-of-type(6):hover .icon-text {
   background: linear-gradient(135deg, #833ab4, #c13584);
 }
@@ -142,53 +141,92 @@ div span {
   z-index: 100;
 }
 
-/* Стили для переключателя языков сверху слева */
-.lang-switcher {
-  position: fixed; /* ИСПРАВЛЕНО: fixed вместо absolute намертво привязывает к экрану */
-  top: 20px;
-  left: 20px;
-  display: flex !important; /* Принудительно выстраивает кнопки в ряд */
-  flex-direction: row !important;
-  align-items: center;
-  font-family: sans-serif;
-  font-size: 0.9rem;
-  z-index: 9999; /* Поверх абсолютно всего */
-}
-
-
-.lang-btn {
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 5px 8px;
-  font-weight: bold;
-  color: #999;
-  transition: color 0.2s ease;
-}
-
-.lang-btn:hover {
-  color: #333;
-}
-
-/* Стиль для активного (выбранного текущего) языка */
-.lang-btn.active {
-  color: #263d42; /* Цвет совпадает с вашей дефолтной переменной --primary */
-  border-bottom: 2px solid #263d42;
-}
-
 .lang-divider {
   color: #ccc;
-  user-select: none; /* Чтобы палочку нельзя было случайно выделить курсором */
+  user-select: none;
+  transition: color 0.3s ease;
 }
 
+body.dark-theme .lang-divider {
+  color: #444;
+}
 
+#main-logo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+  width: 100%;
+  /* Добавляем плавный переход для прозрачности и SVG внутренних элементов */
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+#main-logo svg {
+  transition: fill 0.3s ease;
+}
 
 @keyframes around {
-  0% {
-    transform: rotate(0deg);
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* ==========================================
+   АДАПТИВНАЯ ВЕРСТКА ДЛЯ МОБИЛЬНЫХ УСТРОЙСТВ
+   ========================================== */
+@media (max-width: 600px) {
+  body {
+    padding: 20px; /* Добавляем отступы по краям экрана, чтобы текст не прилипал */
+    justify-content: flex-start; /* На мобильных лучше пустить контент сверху вниз */
+    padding-top: 60px; /* Оставляем место сверху под кнопки языков и темы */
   }
 
-  100% {
-    transform: rotate(360deg);
+  /* Уменьшаем логотип, чтобы он не казался гигантским на маленьком экране */
+  #main-logo svg {
+    width: 140px !important;
+    height: 140px !important;
+  }
+
+  /* Делаем заголовки чуть компактнее */
+  h1 {
+    font-size: 1.5rem;
+    margin-bottom: 8px;
+  }
+
+  h2 {
+    font-size: 1rem;
+    margin-bottom: 20px;
+  }
+
+  #main-cta {
+    font-size: 0.85rem;
+    margin-bottom: 25px;
+    padding: 0 10px; /* Чтобы текст не упирался в границы телефона */
+  }
+
+  /* Сжимаем иконки соцсетей, чтобы они все гарантированно поместились в один ряд */
+  .icon-container {
+    width: 50px;
+    height: 50px;
+    margin-right: 10px; /* Уменьшаем отступы между кнопками */
+  }
+
+  .icon-container .icon-circle {
+    width: 44px;
+    height: 44px;
+  }
+
+  .icon-text {
+    width: 38px;
+    height: 38px;
+  }
+
+  /* Уменьшаем размер самих SVG внутри маленьких кнопок */
+  .icon-text svg {
+    width: 24px !important;
+    height: 24px !important;
+  }
+  
+  .container {
+    gap: 10px; /* Компактное расстояние между иконками на мобильном */
   }
 }
