@@ -111,8 +111,19 @@ div span {
 .icon-link:nth-of-type(5):hover .icon-container { --primary: #181717; }
 .icon-link:nth-of-type(6):hover .icon-container { --primary: #833ab4; }
 
+/* 1. В тёмной теме делаем рамку и пунктир Гитхаба белыми при наведении */
 body.dark-theme .icon-link:nth-of-type(5):hover .icon-container {
   --primary: #ffffff;
+}
+
+/* 2. По умолчанию в тёмной теме красим силуэт котика в белый, чтобы его было видно */
+body.dark-theme .icon-link:nth-of-type(5) .icon-text svg path {
+  fill: #f5f5f5 !important;
+}
+
+/* 3. При наведении внутренний круг заливается системным белым, а котик становится ЧЁРНЫМ */
+body.dark-theme .icon-link:nth-of-type(5):hover .icon-text svg path {
+  fill: #050505 !important;
 }
 
 .icon-link:nth-of-type(6):hover .icon-text {
